@@ -42,12 +42,21 @@ namespace CustomerService
         protected global::System.Web.UI.WebControls.GridView grv1;
 
         /// <summary>
-        /// grvDetail control.
+        /// grv2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView grvDetail;
+        protected global::System.Web.UI.WebControls.GridView grv2;
+
+        /// <summary>
+        /// grv3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView grv3;
     }
 }
