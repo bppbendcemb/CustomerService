@@ -10,7 +10,8 @@ namespace CustomerService
 {
     public partial class company : System.Web.UI.Page
     {
-        string connStr = ConfigurationManager.ConnectionStrings["MyDbConnection"].ConnectionString;
+        //string connStr = ConfigurationManager.ConnectionStrings["myoffice"].ConnectionString;
+        string connStr = ConfigurationManager.ConnectionStrings["myhome"].ConnectionString;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -29,21 +30,21 @@ namespace CustomerService
 
             txtCompanyidChoose.Text = "";
             txtConpanyNameChoose.Text = "";
+            txtConpanyidChange.Text = "";
+            txtCompanyNameChange.Text = "";
 
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 string sql = @"SELECT 
     com.companyid,
     com.company,
-    tax.taxid,
+    com.taxid,
     COUNT(rchd.companyid) AS count_reciept
-FROM [Condox].[dbo].[main.company] com
-LEFT JOIN [Condox].[dbo].[main.tax] tax
-    ON com.companyid = tax.companyid
+FROM      [Condox].[dbo].[main.company] com
 LEFT JOIN [Condox].[dbo].[tran.rchd] rchd
     ON com.companyid = rchd.companyid
 WHERE com.company LIKE @search
-GROUP BY com.companyid, com.company, tax.taxid
+GROUP BY com.companyid, com.company, com.taxid
 HAVING COUNT(rchd.companyid) > 0;";
 
                 using (SqlCommand cmd = new SqlCommand(sql, conn))
@@ -126,18 +127,16 @@ HAVING COUNT(rchd.companyid) > 0;";
             // ====== ทำให้ grv1 เหลือแค่บริษัทที่เลือก ======
             using (SqlConnection conn = new SqlConnection(connStr))
             {
-                string sqlCompany = @"
-SELECT com.[companyid]
+                string sqlCompany = @"SELECT 
+       com.[companyid]
 	  ,com.[company]
-	  ,tax.[taxid]
+	  ,com.[taxid]
 	  ,COUNT(rchd.companyid) count_reciept
  FROM [Condox].[dbo].[main.company] com
- LEFT JOIN [Condox].[dbo].[main.tax] tax
-        ON com.companyid = tax.companyid
  LEFT JOIN [condox].[dbo].[tran.rchd] rchd
         ON com.companyid = rchd.companyid
  WHERE com.companyid = @companyid
- GROUP BY com.companyid, com.company, tax.taxid;";
+ GROUP BY com.companyid, com.company, com.taxid;";
 
                 using (SqlCommand cmd = new SqlCommand(sqlCompany, conn))
                 {
@@ -196,7 +195,37 @@ SELECT com.[companyid]
 
         protected void txtConpanyidChange_TextChanged(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(txtConpanyidChange.Text))
+                return;
 
+            int companyid;
+            if (!int.TryParse(txtConpanyidChange.Text, out companyid))
+                return; // ไม่ใช่เลข ไม่ query
+
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                string query = @"SELECT [companyid], [company], [taxid]
+                         FROM [Condox].[dbo].[main.company]
+                         WHERE companyid = @companyid";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.Add("@companyid", SqlDbType.Int).Value = companyid;
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+
+                    if (dt.Rows.Count > 0)
+                    {
+                        txtCompanyNameChange.Text = dt.Rows[0]["company"].ToString();
+                    }
+                    else
+                    {
+                        txtCompanyNameChange.Text = string.Empty;
+                    }
+                }
+            }
         }
+
     }
 }

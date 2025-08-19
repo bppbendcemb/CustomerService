@@ -34,28 +34,36 @@
 
 
     <%-- Search bar --%>
-    <div class="container-fluid px-0 mb-3 d-flex justify-content-around">
+    <div class="d-flex justify-content-start px-3 mb-3 ms-3">
 
-        <div class="input-group w-100">
-            <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" placeholder="พิมพ์คำค้นหา..."></asp:TextBox>
-            <asp:Button ID="bttSearch" runat="server" CssClass="btn btn-primary" Text="ค้นหา" OnClick="bttSearch_Click" />
+        <div class="row">
+            <div class="d-flex justify-content-start gap-2 row">
+                <asp:TextBox ID="txtCompanyidChoose" runat="server" CssClass="form-control w-25" placeholder="รหัสบริษัทที่เลือก" Enabled="false"></asp:TextBox>
+
+                <!-- ทำให้ textbox ชื่อบริษัทขยายเต็ม -->
+                <asp:TextBox ID="txtConpanyNameChoose" runat="server" CssClass="form-control w-50" placeholder="ชื่อบริษัทที่เลือก" Enabled="false"></asp:TextBox>
+            </div>
+
+
+            <div class="d-flex justify-content-start gap-2 row">
+                <asp:TextBox ID="txtConpanyidChange" runat="server" CssClass="form-control w-25" placeholder="กรอกรหัสบริษัทที่เปลี่ยน"
+                    OnTextChanged="txtConpanyidChange_TextChanged"
+                    AutoPostBack="true"></asp:TextBox>
+                <asp:TextBox ID="txtCompanyNameChange" runat="server" CssClass="form-control w-50" placeholder="ชื่อบริษัทที่เปลี่ยน"></asp:TextBox>
+            </div>
+            <div class="row">
+                <asp:Button ID="btnChange" runat="server" CssClass="btn btn-primary mt-2" Width="1000" Text="บันทึกเปลี่ยนรหัส" OnClick="btnChange_Click" />
+            </div>
         </div>
 
-        <div class="input-group w-100">
-            <asp:TextBox ID="txtCompanyidChoose" runat="server" CssClass="form-control" placeholder="รหัสบริษัทที่เลือก" Enabled="false"></asp:TextBox>
-            <asp:TextBox ID="txtConpanyNameChoose" runat="server" CssClass="form-control" placeholder="ชื่อบริษัที่เลือก" Enabled="false"></asp:TextBox>
-        </div>
-
-         <div class="input-group w-100">
-           <asp:TextBox ID="txtConpanyidChange" runat="server" CssClass="form-control" placeholder="กรอกรหัสบริษัทที่เปลี่ยน" 
-               OnTextChanged="txtConpanyidChange_TextChanged" 
-               AutoPostBack="true"></asp:TextBox>
-           <asp:TextBox ID="txtCompanyNameChange" runat="server" CssClass="form-control" placeholder="ชื่อบริษัทที่เปลี่ยน"></asp:TextBox>
-             <asp:Button ID="btnChange" runat="server" CssClass="btn btn-primary" Text="บันทึกเปลี่ยนรหัส" OnClick="btnChange_Click" />
+        <div class="row">
+            <div class="input-group w-100">
+                <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" placeholder="พิมพ์คำค้นหา..."></asp:TextBox>
+                <asp:Button ID="bttSearch" runat="server" CssClass="btn btn-primary" Text="ค้นหา" OnClick="bttSearch_Click" />
+            </div>
         </div>
 
     </div>
-
     <%-- Content 3 คอลัมน์ --%>
     <div class="container-fluid">
         <div class="row">
