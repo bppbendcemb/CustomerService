@@ -27,16 +27,24 @@ namespace CustomerService
             grv3.DataSource = null;
             grv3.DataBind();
 
+            txtCompanyidChoose.Text = "";
+            txtConpanyNameChoose.Text = "";
+
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 string sql = @"SELECT 
-                           com.[companyid],
-                           com.[company],
-                           tax.[taxid]
-                       FROM [Condo].[dbo].[main.company] com
-                       LEFT JOIN [Condo].[dbo].[main.tax] tax
-                            ON com.companyid = tax.companyid
-                       WHERE com.company LIKE @search";
+    com.companyid,
+    com.company,
+    tax.taxid,
+    COUNT(rchd.companyid) AS count_reciept
+FROM [Condox].[dbo].[main.company] com
+LEFT JOIN [Condox].[dbo].[main.tax] tax
+    ON com.companyid = tax.companyid
+LEFT JOIN [Condox].[dbo].[tran.rchd] rchd
+    ON com.companyid = rchd.companyid
+WHERE com.company LIKE @search
+GROUP BY com.companyid, com.company, tax.taxid
+HAVING COUNT(rchd.companyid) > 0;";
 
                 using (SqlCommand cmd = new SqlCommand(sql, conn))
                 {
@@ -86,8 +94,8 @@ namespace CustomerService
                                   [amount],
                                   [balance],
                                   [note]
-                           FROM [Condo].[dbo].[tran.rchd] rchd
-                           LEFT JOIN [Condo].[dbo].[main.company] company
+                           FROM [Condox].[dbo].[tran.rchd] rchd
+                           LEFT JOIN [Condox].[dbo].[main.company] company
                                   ON rchd.companyid = company.companyid
                        ) A
                        LEFT JOIN (
@@ -95,7 +103,7 @@ namespace CustomerService
                            FROM (
                                SELECT *,
                                       ROW_NUMBER() OVER (PARTITION BY taxinvoice ORDER BY (SELECT NULL)) AS rn
-                               FROM [Condo].[dbo].[tran.rcdt]
+                               FROM [Condox].[dbo].[tran.rcdt]
                            ) AS t
                            WHERE rn = 1
                        ) B
@@ -118,20 +126,36 @@ namespace CustomerService
             // ====== ทำให้ grv1 เหลือแค่บริษัทที่เลือก ======
             using (SqlConnection conn = new SqlConnection(connStr))
             {
-                string sqlCompany = @"SELECT com.[companyid], com.[company], tax.[taxid]
-                              FROM [Condo].[dbo].[main.company] com
-                              LEFT JOIN [Condo].[dbo].[main.tax] tax
-                                     ON com.companyid = tax.companyid
-                              WHERE com.companyid = @companyid";
+                string sqlCompany = @"
+SELECT com.[companyid]
+	  ,com.[company]
+	  ,tax.[taxid]
+	  ,COUNT(rchd.companyid) count_reciept
+ FROM [Condox].[dbo].[main.company] com
+ LEFT JOIN [Condox].[dbo].[main.tax] tax
+        ON com.companyid = tax.companyid
+ LEFT JOIN [condox].[dbo].[tran.rchd] rchd
+        ON com.companyid = rchd.companyid
+ WHERE com.companyid = @companyid
+ GROUP BY com.companyid, com.company, tax.taxid;";
 
                 using (SqlCommand cmd = new SqlCommand(sqlCompany, conn))
                 {
                     cmd.Parameters.AddWithValue("@companyid", companyId);
                     conn.Open();
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                     {
-                        grv1.DataSource = reader;
+                        DataTable dt = new DataTable();
+                        da.Fill(dt);
+                        grv1.DataSource = dt;
                         grv1.DataBind();
+
+                        if (dt.Rows.Count > 0)
+                        {
+                            txtCompanyidChoose.Text = dt.Rows[0]["companyid"].ToString();
+                            txtConpanyNameChoose.Text = dt.Rows[0]["company"].ToString();
+                        }
                     }
                 }
             }
@@ -148,7 +172,7 @@ namespace CustomerService
                 string query = @"SELECT TOP (1000) [taxinvoice]
                                      ,[date]
                                      ,[detail]
-                                 FROM [Condo].[dbo].[tran.rcdt]
+                                 FROM [Condox].[dbo].[tran.rcdt]
                                  WHERE taxinvoice = @serachtax";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
@@ -163,6 +187,16 @@ namespace CustomerService
                 }
 
             }
+        }
+
+        protected void btnChange_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void txtConpanyidChange_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -31,12 +31,29 @@
         }
     </style>
 
+
+
     <%-- Search bar --%>
-    <div class="container-fluid px-0 mb-3">
+    <div class="container-fluid px-0 mb-3 d-flex justify-content-around">
+
         <div class="input-group w-100">
             <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" placeholder="พิมพ์คำค้นหา..."></asp:TextBox>
             <asp:Button ID="bttSearch" runat="server" CssClass="btn btn-primary" Text="ค้นหา" OnClick="bttSearch_Click" />
         </div>
+
+        <div class="input-group w-100">
+            <asp:TextBox ID="txtCompanyidChoose" runat="server" CssClass="form-control" placeholder="รหัสบริษัทที่เลือก" Enabled="false"></asp:TextBox>
+            <asp:TextBox ID="txtConpanyNameChoose" runat="server" CssClass="form-control" placeholder="ชื่อบริษัที่เลือก" Enabled="false"></asp:TextBox>
+        </div>
+
+         <div class="input-group w-100">
+           <asp:TextBox ID="txtConpanyidChange" runat="server" CssClass="form-control" placeholder="กรอกรหัสบริษัทที่เปลี่ยน" 
+               OnTextChanged="txtConpanyidChange_TextChanged" 
+               AutoPostBack="true"></asp:TextBox>
+           <asp:TextBox ID="txtCompanyNameChange" runat="server" CssClass="form-control" placeholder="ชื่อบริษัทที่เปลี่ยน"></asp:TextBox>
+             <asp:Button ID="btnChange" runat="server" CssClass="btn btn-primary" Text="บันทึกเปลี่ยนรหัส" OnClick="btnChange_Click" />
+        </div>
+
     </div>
 
     <%-- Content 3 คอลัมน์ --%>
@@ -49,15 +66,16 @@
                         บริษัท
                     </div>
                     <div class="card-body p-0" style="max-height: 45rem; overflow-y: auto; overflow-x: auto;">
-                        <asp:GridView ID="grv1" runat="server" CssClass="table table-bordered mb-0"
+                        <asp:GridView ID="grv1" runat="server" CssClass="table table-bordered table-sm table-striped mb-0"
                             AutoGenerateColumns="False" DataKeyNames="companyid"
                             AutoGenerateSelectButton="False"
                             OnSelectedIndexChanged="grv1_SelectedIndexChanged">
                             <Columns>
-                                <asp:BoundField DataField="companyid" HeaderText="Company ID" />
+                                <asp:BoundField DataField="companyid" HeaderText="ID" HeaderStyle-Width="60" />
                                 <asp:BoundField DataField="company" HeaderText="Company" />
-                                <asp:BoundField DataField="taxid" HeaderText="Tax ID" />
-                                <asp:CommandField ShowSelectButton="True" SelectText="เลือก" />
+                                <asp:BoundField DataField="taxid" HeaderText="Tax ID" HeaderStyle-Width="130" />
+                                <asp:BoundField DataField="count_reciept" HeaderText="bill" HeaderStyle-Width="40" />
+                                <asp:CommandField ShowSelectButton="True" SelectText="เลือก" HeaderText="ประวัติ" HeaderStyle-Width="60" />
                             </Columns>
                         </asp:GridView>
                     </div>
@@ -83,7 +101,7 @@
                                 <asp:BoundField DataField="company" HeaderText="company" />
                                 <asp:BoundField DataField="detail" HeaderText="detail" />
                                 <asp:BoundField DataField="value" HeaderText="value" />
-                                <asp:CommandField ShowSelectButton="True" SelectText="เลือก" />
+                                <asp:CommandField ShowSelectButton="True" SelectText="เลือก" HeaderText="รายละเอียด" />
                             </Columns>
                         </asp:GridView>
                     </div>
