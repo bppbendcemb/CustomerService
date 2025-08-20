@@ -10,8 +10,8 @@ namespace CustomerService
 {
     public partial class company : System.Web.UI.Page
     {
-        //string connStr = ConfigurationManager.ConnectionStrings["myoffice"].ConnectionString;
-        string connStr = ConfigurationManager.ConnectionStrings["myhome"].ConnectionString;
+        string connStr = ConfigurationManager.ConnectionStrings["myoffice"].ConnectionString;
+        //string connStr = ConfigurationManager.ConnectionStrings["myhome"].ConnectionString;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -19,6 +19,11 @@ namespace CustomerService
         }
 
         protected void bttSearch_Click(object sender, EventArgs e)
+        {
+            Search();
+        }
+
+        private void Search()
         {
             // ล้างข้อมูลเก่าก่อนค้นหาใหม่
             grv1.DataSource = null;
@@ -61,7 +66,6 @@ HAVING COUNT(rchd.companyid) > 0;";
                 }
             }
         }
-
 
         protected void grv1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -227,5 +231,28 @@ HAVING COUNT(rchd.companyid) > 0;";
             }
         }
 
+        protected void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            if(txtSearch.Text == "")
+            {
+                // ล้างข้อมูลเก่าก่อนค้นหาใหม่
+                grv1.DataSource = null;
+                grv1.DataBind();
+                grv2.DataSource = null;
+                grv2.DataBind();
+                grv3.DataSource = null;
+                grv3.DataBind();
+
+                txtCompanyidChoose.Text = "";
+                txtConpanyNameChoose.Text = "";
+                txtConpanyidChange.Text = "";
+                txtCompanyNameChange.Text = "";
+            }
+            else
+            {
+                Search();
+            }
+           
+        }
     }
 }

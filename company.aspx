@@ -34,36 +34,47 @@
 
 
     <%-- Search bar --%>
-    <div class="d-flex justify-content-start px-3 mb-3 ms-3">
 
-        <div class="row">
-            <div class="d-flex justify-content-start gap-2 row">
-                <asp:TextBox ID="txtCompanyidChoose" runat="server" CssClass="form-control w-25" placeholder="รหัสบริษัทที่เลือก" Enabled="false"></asp:TextBox>
-
-                <!-- ทำให้ textbox ชื่อบริษัทขยายเต็ม -->
-                <asp:TextBox ID="txtConpanyNameChoose" runat="server" CssClass="form-control w-50" placeholder="ชื่อบริษัทที่เลือก" Enabled="false"></asp:TextBox>
-            </div>
-
-
-            <div class="d-flex justify-content-start gap-2 row">
-                <asp:TextBox ID="txtConpanyidChange" runat="server" CssClass="form-control w-25" placeholder="กรอกรหัสบริษัทที่เปลี่ยน"
-                    OnTextChanged="txtConpanyidChange_TextChanged"
-                    AutoPostBack="true"></asp:TextBox>
-                <asp:TextBox ID="txtCompanyNameChange" runat="server" CssClass="form-control w-50" placeholder="ชื่อบริษัทที่เปลี่ยน"></asp:TextBox>
-            </div>
-            <div class="row">
-                <asp:Button ID="btnChange" runat="server" CssClass="btn btn-primary mt-2" Width="1000" Text="บันทึกเปลี่ยนรหัส" OnClick="btnChange_Click" />
+    <div class="card shadow-sm p-3 m-2">
+        <div class="gap-1 d-flex justify-content-start">
+            
+            <label for="txtCompanyidChoose" class="input-group-text" style="width:100px;">รหัสที่เลือก :</label>
+            <asp:TextBox ID="txtCompanyidChoose" runat="server" CssClass="form-control" placeholder="รหัสบริษัทที่เลือก" Enabled="false"></asp:TextBox>
+            <div class="row ms-2" style="width: 30%;">
+                <asp:TextBox ID="txtConpanyNameChoose" runat="server" CssClass="form-control" placeholder="ชื่อบริษัทที่เลือก" Enabled="false"></asp:TextBox>
             </div>
         </div>
 
-        <div class="row">
-            <div class="input-group w-100">
-                <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" placeholder="พิมพ์คำค้นหา..."></asp:TextBox>
-                <asp:Button ID="bttSearch" runat="server" CssClass="btn btn-primary" Text="ค้นหา" OnClick="bttSearch_Click" />
+        <div class="gap-1 d-flex justify-content-start mt-2">
+            
+            <label for="txtConpanyidChange" class="input-group-text" style="width:100px;">เปลี่ยนเป็น :</label>
+            <asp:TextBox ID="txtConpanyidChange" runat="server" CssClass="form-control" placeholder="กรอกรหัสบริษัทที่เปลี่ยน" OnTextChanged="txtConpanyidChange_TextChanged" AutoPostBack="true"></asp:TextBox>
+            <div class="row ms-2" style="width: 30%;">
+                <asp:TextBox ID="txtCompanyNameChange" runat="server" CssClass="form-control" placeholder="ชื่อบริษัทที่เปลี่ยน" Enabled="false"></asp:TextBox>
             </div>
+            <asp:Button ID="btnChange" runat="server" CssClass="btn btn-primary ms-4" Text="บันทึกเปลี่ยนรหัส" OnClick="btnChange_Click" />
         </div>
 
     </div>
+
+
+    <div class="d-flex justify-content-center align-items-center m-2">
+        <div class="input-group" style="width: 100%; max-width: 800px;">
+            <div class="row w-75">
+                <asp:TextBox ID="txtSearch" runat="server"
+                    CssClass="form-control rounded-pill ps-4"
+                    placeholder="พิมพ์คำค้นหา..."
+                    OnTextChanged="txtSearch_TextChanged"
+                    AutoPostBack="true"></asp:TextBox>
+            </div>
+
+            <asp:Button ID="bttSearch" runat="server"
+                CssClass="btn btn-primary rounded-pill ms-3 px-4"
+                Text="ค้นหา"
+                OnClick="bttSearch_Click" />
+        </div>
+    </div>
+
     <%-- Content 3 คอลัมน์ --%>
     <div class="container-fluid">
         <div class="row">
@@ -73,7 +84,7 @@
                     <div class="card-header">
                         บริษัท
                     </div>
-                    <div class="card-body p-0" style="max-height: 45rem; overflow-y: auto; overflow-x: auto;">
+                    <div class="card-body p-0" style="max-height: 35rem; overflow-y: auto; overflow-x: auto;">
                         <asp:GridView ID="grv1" runat="server" CssClass="table table-bordered table-sm table-striped mb-0"
                             AutoGenerateColumns="False" DataKeyNames="companyid"
                             AutoGenerateSelectButton="False"
@@ -96,17 +107,17 @@
                     <div class="card-header">
                         ประวัติการซื้อ
                     </div>
-                    <div class="card-body p-0" style="max-height: 45rem; overflow-y: auto; overflow-x: auto;">
-                        <asp:GridView ID="grv2" runat="server" CssClass="table table-bordered mb-0"
+                    <div class="card-body p-0" style="max-height: 35rem; overflow-y: auto; overflow-x: auto;">
+                        <asp:GridView ID="grv2" runat="server" CssClass="table table-bordered table-sm mb-0"
                             AutoGenerateColumns="false" DataKeyNames="taxinvoice"
                             AutoGenerateSelectButton="false"
                             OnSelectedIndexChanged="grv2_SelectedIndexChanged">
                             <Columns>
                                 <asp:BoundField DataField="taxinvoice" HeaderText="Tax Invoice" />
-                                <asp:BoundField DataField="date" HeaderText="วันที่"
+                                <asp:BoundField DataField="date" HeaderText="period"
                                     DataFormatString="{0:MM/yyyy}" HtmlEncode="false" />
                                 <asp:BoundField DataField="companyid" HeaderText="companyid" Visible="false" />
-                                <asp:BoundField DataField="company" HeaderText="company" />
+                                <%--<asp:BoundField DataField="company" HeaderText="company" />--%>
                                 <asp:BoundField DataField="detail" HeaderText="detail" />
                                 <asp:BoundField DataField="value" HeaderText="value" />
                                 <asp:CommandField ShowSelectButton="True" SelectText="เลือก" HeaderText="รายละเอียด" />
@@ -122,7 +133,7 @@
                     <div class="card-header">
                         รายละเอียดการชำระ
                     </div>
-                    <div class="card-body" style="max-height: 45rem; overflow-y: auto; overflow-x: auto;">
+                    <div class="card-body" style="max-height: 35rem; overflow-y: auto; overflow-x: auto;">
                         <asp:GridView ID="grv3" runat="server" CssClass="table table-bordered mb-0"
                             AutoGenerateColumns="false">
                             <Columns>
