@@ -1,0 +1,30 @@
+﻿body {
+}
+
+.grv-hover tbody tr:hover {
+    background-color: #f0f8ff;
+}
+
+.grv-selected {
+    background-color: #add8e6 !important;
+}
+
+.table {
+    width: 100%;
+    table-layout: fixed;
+    word-wrap: break-word;
+}
+
+.card-scroll {
+    min-height: 45rem;
+    max-height: 45rem;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+.table thead th {
+    position: sticky;
+    top: 0;
+    background: #fff; /* พื้นหลังหัวตาราง */
+    z-index: 10;
+}

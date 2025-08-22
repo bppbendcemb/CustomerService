@@ -1,69 +1,44 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="company.aspx.cs" Inherits="CustomerService.company" %>
+﻿<%@ Page Title="Company" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="company.aspx.cs" Inherits="CustomerService.company" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <style>
-        .grv-hover tbody tr:hover {
-            background-color: #f0f8ff;
-        }
-
-        .grv-selected {
-            background-color: #add8e6 !important;
-        }
-
-        .table {
-            width: 100%;
-            table-layout: fixed;
-            word-wrap: break-word;
-        }
-
-        .card-scroll {
-            min-height: 45rem;
-            max-height: 45rem;
-            overflow-y: auto;
-            overflow-x: auto;
-        }
-
-        .table thead th {
-            position: sticky;
-            top: 0;
-            background: #fff; /* พื้นหลังหัวตาราง */
-            z-index: 10;
-        }
-    </style>
-
-
+    <link href="css/styles.css" rel="stylesheet" />
 
     <%-- Search bar --%>
-    <div class="d-flex justify-content-start px-3 mb-3 ms-3">
+    <div class="card shadow-sm p-3 m-2">
+        <div class="d-flex justify-content-start">
+            <div class="row w-75">
+                <div class="d-flex justify-content-start gap-2 row">
+                    <asp:TextBox ID="txtCompanyidChoose" runat="server" CssClass="form-control w-25" placeholder="รหัสบริษัทที่เลือก" Enabled="false"></asp:TextBox>
+                    <asp:TextBox ID="txtConpanyNameChoose" runat="server" CssClass="form-control w-50" placeholder="ชื่อบริษัทที่เลือก" Enabled="false"></asp:TextBox>
+                </div>
 
-        <div class="row">
-            <div class="d-flex justify-content-start gap-2 row">
-                <asp:TextBox ID="txtCompanyidChoose" runat="server" CssClass="form-control w-25" placeholder="รหัสบริษัทที่เลือก" Enabled="false"></asp:TextBox>
 
-                <!-- ทำให้ textbox ชื่อบริษัทขยายเต็ม -->
-                <asp:TextBox ID="txtConpanyNameChoose" runat="server" CssClass="form-control w-50" placeholder="ชื่อบริษัทที่เลือก" Enabled="false"></asp:TextBox>
+                <div class="d-flex justify-content-start gap-2 row">
+                    <asp:TextBox ID="txtConpanyidChange" runat="server" CssClass="form-control w-25" placeholder="กรอกรหัสบริษัทที่เปลี่ยน"
+                        OnTextChanged="txtConpanyidChange_TextChanged"
+                        AutoPostBack="true"></asp:TextBox>
+                    <asp:TextBox ID="txtCompanyNameChange" runat="server" CssClass="form-control w-50" placeholder="ชื่อบริษัทที่เปลี่ยน"></asp:TextBox>
+                </div>
+
+
+
             </div>
-
-
-            <div class="d-flex justify-content-start gap-2 row">
-                <asp:TextBox ID="txtConpanyidChange" runat="server" CssClass="form-control w-25" placeholder="กรอกรหัสบริษัทที่เปลี่ยน"
-                    OnTextChanged="txtConpanyidChange_TextChanged"
-                    AutoPostBack="true"></asp:TextBox>
-                <asp:TextBox ID="txtCompanyNameChange" runat="server" CssClass="form-control w-50" placeholder="ชื่อบริษัทที่เปลี่ยน"></asp:TextBox>
-            </div>
-            <div class="row">
-                <asp:Button ID="btnChange" runat="server" CssClass="btn btn-primary mt-2" Width="1000" Text="บันทึกเปลี่ยนรหัส" OnClick="btnChange_Click" />
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="input-group w-100">
-                <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" placeholder="พิมพ์คำค้นหา..."></asp:TextBox>
-                <asp:Button ID="bttSearch" runat="server" CssClass="btn btn-primary" Text="ค้นหา" OnClick="bttSearch_Click" />
+            <div class="w-25">
+                <asp:Button ID="btnChange" runat="server" CssClass="btn btn-primary" Text="บันทึกเปลี่ยนรหัส" OnClick="btnChange_Click" />
             </div>
         </div>
-
     </div>
+
+    <div class="d-flexjustify-content-end m-2 p-2">
+        <div class="input-group">
+            <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" placeholder="พิมพ์คำค้นหา..."></asp:TextBox>
+            <asp:Button ID="bttSearch" runat="server" CssClass="btn btn-primary" Text="ค้นหา" OnClick="bttSearch_Click" />
+        </div>
+        <div>
+            <asp:Label ID="lblMessage" runat="server"></asp:Label>
+        </div>
+    </div>
+
     <%-- Content 3 คอลัมน์ --%>
     <div class="container-fluid">
         <div class="row">
